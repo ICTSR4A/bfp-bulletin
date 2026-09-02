@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in · BFP Region IV-A Bulletin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="auth-shell">
+
+  <!-- Brand panel -->
+  <section class="auth-hero">
+    <div class="hero-content">
+      <span class="hero-seal">BFP</span>
+      <h1>Bureau of Fire Protection</h1>
+      <p class="hero-tagline">Region IV-A &middot; CALABARZON<br>Personnel Bulletin &amp; Services Portal</p>
+      <ul class="hero-points">
+        <li>Read memorandums, news and advisories from HQ</li>
+        <li>Coverage across Cavite, Laguna, Batangas, Rizal and Quezon</li>
+        <li>One account for every station</li>
+      </ul>
+    </div>
+    <div class="hero-arch" aria-hidden="true"></div>
+  </section>
+
+  <!-- Form panel -->
+  <section class="auth-panel">
+
+    <!-- Log in -->
+    <div class="auth-card" id="loginCard">
+      <span class="auth-eyebrow">Sign in</span>
+      <h2>Log in to your account</h2>
+
+      <form id="loginForm">
+        <label class="field">
+          <span>Username or email</span>
+          <input type="text" id="loginUsername" required autocomplete="username" placeholder="juan.delacruz or you@bfp.gov.ph">
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <div class="password-wrap">
+            <input type="password" id="loginPassword" required autocomplete="current-password">
+            <button type="button" class="eye-toggle" data-target="loginPassword" aria-label="Show password">
+              <svg class="eye-open" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-closed hidden" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </label>
+
+        <div class="field-row-between">
+          <label class="checkbox-field">
+            <input type="checkbox" id="rememberMe">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="link-muted">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-solid btn-block">Log In</button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <button type="button" class="btn-outline btn-block" id="showSignup">Create new account</button>
+    </div>
+
+    <!-- Create account -->
+    <div class="auth-card hidden" id="signupCard">
+      <span class="auth-eyebrow">New account</span>
+      <h2>Set up your account</h2>
+
+      <form id="signupForm">
+        <div class="field-row">
+          <label class="field">
+            <span>Rank</span>
+            <input type="text" id="signupRank" required placeholder="e.g. SFO1">
+          </label>
+          <label class="field">
+            <span>Gender</span>
+            <select id="signupGender" required>
+              <option value="" disabled selected>Select</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Full name</span>
+          <input type="text" id="signupName" required placeholder="Juan Dela Cruz">
+        </label>
+
+        <label class="field">
+          <span>Office</span>
+          <select id="signupOffice" required>
+            <option value="" disabled selected>Select office</option>
+            <option>OFFICE OF THE REGIONAL DIRECTOR (ORD)</option>
+            <option>CHAPLAIN SERVICES</option>
+            <option>LEGAL SERVICE</option>
+            <option>PUBLIC INFORMATION SERVICE (PIS)</option>
+            <option>INFORMATION &amp; COMMUNICATIONS TECHNOLOGY SERVICE (ICTS)</option>
+            <option>OFFICE OF THE ASSISTANT REGIONAL DIRECTOR FOR ADMINISTRATION (OARDA)</option>
+            <option>OFFICE OF THE ASSISTANT REGIONAL DIRECTOR FOR OPERATIONS (OARDO)</option>
+            <option>OFFICE OF THE REGIONAL CHIEF OF STAFF (ORCS)</option>
+            <option>PLANNING AND PROGRAMMING DIVISION</option>
+            <option>PROGRAM MONITORING AND EVALUATION SECTION</option>
+            <option>PLANNING SECTION</option>
+            <option>STRATEGY MANAGEMENT SECTION</option>
+            <option>ADMIN DIVISION</option>
+            <option>PERSONNEL RECORDS SECTION (PRS)</option>
+            <option>HUMAN RESOURCE MANAGEMENT SECTION (HRMS)</option>
+            <option>MORALE AND BENEFITS SECTION (MBS)</option>
+            <option>FINANCIAL MANAGEMENT DIVISION (FMD)</option>
+            <option>BUDGET SECTION</option>
+            <option>ACCOUNTING SECTION</option>
+            <option>FINANCE DISBURSEMENT SECTION</option>
+            <option>LOGISTICS DIVISION</option>
+            <option>ENGINEERING SECTION</option>
+            <option>SUPPLY MANAGEMENT SECTION</option>
+            <option>BIDS AND AWARDS COMMITTEE SUPPORT SECTION</option>
+            <option>SUPPLY AND PROPERTY ACCOUNTABLE SERVICE</option>
+            <option>FIRE SAFETY ENFORCEMENT AND PREVENTION DIVISION</option>
+            <option>FIRE SAFETY MANAGEMENT SECTION</option>
+            <option>COMMUNITY RELATIONS SECTION</option>
+            <option>FIRE SUPPRESSION OPERATIONS SECTION</option>
+            <option>INTELLIGENCE AND INVESTIGATION SECTION</option>
+            <option>SPECIAL OPERATIONS SECTION</option>
+            <option>FIRE CONTROL OPERATIONS SECTION</option>
+            <option>SPECIAL RESCUE FORCE</option>
+            <option>HEALTH SERVICES</option>
+            <option>MEDICAL SECTION</option>
+            <option>HEALTH MANAGEMENT SECTION</option>
+            <option>DENTAL SECTION</option>
+            <option>THERAPEUTIC REHABILITATION SECTION</option>
+            <option>MOTORPOOL SECTION</option>
+            <option>SECURITY AND PROTECTION SERVICE</option>
+            <option>TRAINING SERVICE</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input type="email" id="signupEmail" required autocomplete="username" placeholder="you@bfp.gov.ph">
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <div class="password-wrap">
+            <input type="password" id="signupPassword" required autocomplete="new-password">
+            <button type="button" class="eye-toggle" data-target="signupPassword" aria-label="Show password">
+              <svg class="eye-open" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-closed hidden" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Confirm password</span>
+          <div class="password-wrap">
+            <input type="password" id="signupConfirm" required autocomplete="new-password">
+            <button type="button" class="eye-toggle" data-target="signupConfirm" aria-label="Show password">
+              <svg class="eye-open" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-closed hidden" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.4 20.4 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </label>
+
+        <p id="signupError" class="form-error hidden"></p>
+
+        <button type="submit" class="btn-solid btn-block">Sign Up</button>
+      </form>
+
+      <p class="switch-line">Already have an account? <a href="#" id="showLogin">Log in</a></p>
+    </div>
+
+  </section>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
