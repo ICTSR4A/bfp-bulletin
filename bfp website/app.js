@@ -29,6 +29,13 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 const lightboxClose = document.getElementById('lightboxClose');
 
+// Sidebar profile card elements
+const sidebarProfile = document.getElementById('sidebarProfile');
+const profileAvatar = document.getElementById('profileAvatar');
+const profileName = document.getElementById('profileName');
+const profileRank = document.getElementById('profileRank');
+const profileOffice = document.getElementById('profileOffice');
+
 let activeFilter = 'all';
 let allPosts = [];
 let selectedFiles = [];
@@ -49,11 +56,41 @@ function applyAuthState(user) {
     accountEmail.textContent = user.email;
     accountEmail.classList.remove('hidden');
     signOutBtn.classList.remove('hidden');
+    loadProfileCard(user.id);
   } else {
     accountEmail.classList.add('hidden');
     signOutBtn.classList.add('hidden');
     composer.classList.add('hidden');
+    sidebarProfile.classList.add('hidden');
   }
+}
+
+// ---------- Sidebar profile card ----------
+async function loadProfileCard(userId) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('full_name, rank, office')
+    .eq('id', userId)
+    .single();
+
+  if (error || !data) {
+    sidebarProfile.classList.add('hidden');
+    return;
+  }
+
+  const name = data.full_name || 'BFP Personnel';
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(w => w[0].toUpperCase())
+    .join('');
+
+  profileAvatar.textContent = initials || 'BF';
+  profileName.textContent = name;
+  profileRank.textContent = data.rank || '';
+  profileOffice.textContent = data.office || '';
+  sidebarProfile.classList.remove('hidden');
 }
 
 // ---------- Composer open/close (gated behind sign-in) ----------
