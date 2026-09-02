@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BFP Region IV-A Bulletin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="mark">
+      <span class="mark-badge">BFP</span>
+      <div class="mark-text">
+        <strong>Region IV-A Bulletin</strong>
+        <span>Memorandums &amp; Updates · CALABARZON</span>
+      </div>
+    </div>
+    <button id="composerToggle" class="btn-primary">Post an update</button>
+  </div>
+</header>
+
+<main class="feed-wrap">
+
+  <!-- Composer: styled as an intake slip, hidden until toggled -->
+  <section id="composer" class="slip hidden">
+    <div class="slip-perf" aria-hidden="true"></div>
+    <h2>New Post</h2>
+    <form id="postForm">
+      <label class="field">
+        <span>Category</span>
+        <select id="postCategory" required>
+          <option value="memorandum">Memorandum</option>
+          <option value="news">News</option>
+          <option value="advisory">Advisory</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Title</span>
+        <input id="postTitle" type="text" required maxlength="140" placeholder="e.g. Revised Duty Roster for September">
+      </label>
+
+      <label class="field">
+        <span>Details</span>
+        <textarea id="postBody" rows="4" placeholder="Write the memorandum or update here..."></textarea>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Station</span>
+          <input id="postStation" type="text" placeholder="e.g. Calamba City FS">
+        </label>
+        <label class="field">
+          <span>Province</span>
+          <input id="postProvince" type="text" placeholder="e.g. Laguna">
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Attachments (images)</span>
+        <input id="postImages" type="file" accept="image/*" multiple>
+        <div id="imagePreview" class="image-preview"></div>
+      </label>
+
+      <div class="slip-actions">
+        <button type="button" id="cancelPost" class="btn-ghost">Cancel</button>
+        <button type="submit" class="btn-primary" id="submitPost">Publish</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Filter bar -->
+  <nav class="filters" aria-label="Filter by category">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="memorandum">Memorandum</button>
+    <button class="chip" data-filter="news">News</button>
+    <button class="chip" data-filter="advisory">Advisory</button>
+  </nav>
+
+  <!-- Feed -->
+  <section id="feed" class="feed">
+    <p class="feed-loading">Loading posts…</p>
+  </section>
+
+</main>
+
+<template id="postCardTemplate">
+  <article class="card">
+    <div class="stamp"></div>
+    <header class="card-head">
+      <h3 class="card-title"></h3>
+      <div class="card-meta">
+        <span class="card-author"></span>
+        <span class="card-dot">·</span>
+        <span class="card-date"></span>
+        <span class="card-station"></span>
+      </div>
+    </header>
+    <p class="card-body"></p>
+    <div class="card-images"></div>
+  </article>
+</template>
+
+<div id="lightbox" class="lightbox hidden">
+  <button id="lightboxClose" class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

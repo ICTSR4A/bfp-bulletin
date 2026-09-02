@@ -1,0 +1,191 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// ---- Configure these two values for your project ----
+const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-ANON-PUBLIC-KEY';
+// -------------------------------------------------------
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const BUCKET = 'memo-attachments';
+
+const feedEl = document.getElementById('feed');
+const composer = document.getElementById('composer');
+const composerToggle = document.getElementById('composerToggle');
+const cancelPost = document.getElementById('cancelPost');
+const postForm = document.getElementById('postForm');
+const imageInput = document.getElementById('postImages');
+const imagePreview = document.getElementById('imagePreview');
+const submitBtn = document.getElementById('submitPost');
+const cardTemplate = document.getElementById('postCardTemplate');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+let activeFilter = 'all';
+let allPosts = [];
+let selectedFiles = [];
+
+// ---------- Composer open/close ----------
+composerToggle.addEventListener('click', () => {
+  composer.classList.remove('hidden');
+  composer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+cancelPost.addEventListener('click', () => resetComposer());
+
+function resetComposer() {
+  postForm.reset();
+  selectedFiles = [];
+  imagePreview.innerHTML = '';
+  composer.classList.add('hidden');
+}
+
+// ---------- Image preview ----------
+imageInput.addEventListener('change', () => {
+  selectedFiles = Array.from(imageInput.files);
+  imagePreview.innerHTML = '';
+  selectedFiles.forEach(file => {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    imagePreview.appendChild(img);
+  });
+});
+
+// ---------- Submit new post ----------
+postForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Publishing…';
+
+  try {
+    const category = document.getElementById('postCategory').value;
+    const title = document.getElementById('postTitle').value.trim();
+    const body = document.getElementById('postBody').value.trim();
+    const station = document.getElementById('postStation').value.trim();
+    const province = document.getElementById('postProvince').value.trim();
+
+    // 1. Upload images to Storage first, collect their public URLs
+    const imageUrls = [];
+    for (const file of selectedFiles) {
+      const path = `${province || 'unassigned'}/${Date.now()}-${file.name}`.replace(/\s+/g, '-');
+      const { error: uploadError } = await supabase.storage
+        .from(BUCKET)
+        .upload(path, file, { cacheControl: '3600', upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase.storage
+        .from(BUCKET)
+        .getPublicUrl(path);
+
+      imageUrls.push(publicUrlData.publicUrl);
+    }
+
+    // 2. Insert the post row
+    const { error: insertError } = await supabase.from('posts').insert({
+      title,
+      category,
+      body,
+      station,
+      province,
+      image_urls: imageUrls
+    });
+
+    if (insertError) throw insertError;
+
+    resetComposer();
+    await loadPosts();
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong publishing this post: ' + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Publish';
+  }
+});
+
+// ---------- Filters ----------
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    renderFeed();
+  });
+});
+
+// ---------- Load + render ----------
+async function loadPosts() {
+  feedEl.innerHTML = '<p class="feed-loading">Loading posts…</p>';
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    feedEl.innerHTML = `<p class="feed-empty">Couldn't load posts: ${error.message}</p>`;
+    return;
+  }
+
+  allPosts = data;
+  renderFeed();
+}
+
+function renderFeed() {
+  const posts = activeFilter === 'all'
+    ? allPosts
+    : allPosts.filter(p => p.category === activeFilter);
+
+  feedEl.innerHTML = '';
+
+  if (posts.length === 0) {
+    feedEl.innerHTML = '<p class="feed-empty">No posts yet in this category.</p>';
+    return;
+  }
+
+  posts.forEach(post => feedEl.appendChild(buildCard(post)));
+}
+
+function buildCard(post) {
+  const node = cardTemplate.content.cloneNode(true);
+
+  const stamp = node.querySelector('.stamp');
+  stamp.textContent = post.category;
+  stamp.classList.add(post.category);
+
+  node.querySelector('.card-title').textContent = post.title;
+  node.querySelector('.card-author').textContent = 'BFP Region IV-A';
+  node.querySelector('.card-date').textContent = formatDate(post.created_at);
+  node.querySelector('.card-station').textContent = [post.station, post.province].filter(Boolean).join(', ');
+  node.querySelector('.card-body').textContent = post.body || '';
+
+  const imagesWrap = node.querySelector('.card-images');
+  (post.image_urls || []).forEach(url => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = post.title;
+    img.addEventListener('click', () => openLightbox(url));
+    imagesWrap.appendChild(img);
+  });
+
+  return node;
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+// ---------- Lightbox ----------
+function openLightbox(url) {
+  lightboxImg.src = url;
+  lightbox.classList.remove('hidden');
+}
+lightboxClose.addEventListener('click', () => lightbox.classList.add('hidden'));
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) lightbox.classList.add('hidden');
+});
+
+// ---------- Init ----------
+loadPosts();
