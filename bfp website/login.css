@@ -189,6 +189,19 @@ h1, h2 { font-family: var(--display); margin: 0; }
   justify-content: center;
 }
 
+/* Seal already has its own shield artwork, so drop the colored background and give it more room */
+.card-badge-seal {
+  width: 64px;
+  height: 64px;
+  background: none;
+  border-radius: 0;
+}
+.card-badge-seal img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .auth-card h2 {
   font-size: 24px;
   font-weight: 600;
