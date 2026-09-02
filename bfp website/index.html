@@ -6,7 +6,7 @@
 <title>BFP Region IV-A Bulletin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style-modern.css">
 </head>
 <body>
 
@@ -28,7 +28,6 @@
       </button>
     </div>
   </div>
-  <div class="awning" aria-hidden="true"></div>
 </header>
 
 <main class="layout">
@@ -67,30 +66,11 @@
 
   <div class="feed-column">
 
-    <!-- Sign-in: shown when a signed-out user clicks "Post an update" -->
-    <section id="loginPanel" class="panel-card hidden">
-      <span class="panel-eyebrow">Sign in</span>
-      <h2>Sign in to post</h2>
-      <p class="panel-hint">Only signed-in BFP accounts can publish. Ask your admin to create one if you don't have it yet.</p>
-      <form id="loginForm">
-        <label class="field">
-          <span>Email</span>
-          <input id="loginEmail" type="email" required autocomplete="username">
-        </label>
-        <label class="field">
-          <span>Password</span>
-          <input id="loginPassword" type="password" required autocomplete="current-password">
-        </label>
-        <p id="loginError" class="form-error hidden"></p>
-        <div class="panel-actions">
-          <button type="button" id="cancelLogin" class="pill-btn pill-btn-ghost">Cancel</button>
-          <button type="submit" class="pill-btn pill-btn-solid" id="submitLogin">Sign in</button>
-        </div>
-      </form>
-    </section>
-
     <!-- Composer -->
     <section id="composer" class="panel-card hidden">
+      <div class="panel-badge" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
       <span class="panel-eyebrow">New post</span>
       <h2>File a new update</h2>
       <form id="postForm">
@@ -166,7 +146,6 @@
 
 <template id="postCardTemplate">
   <article class="card">
-    <div class="card-spine"></div>
     <div class="card-inner">
       <header class="card-head">
         <span class="patch">
