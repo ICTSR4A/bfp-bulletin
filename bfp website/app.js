@@ -1,8 +1,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // ---- Configure these two values for your project ----
-const SUPABASE_URL = 'https://awqnrdbytynmalgccocp.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3cW5yZGJ5dHlubWFsZ2Njb2NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzMDg4NjYsImV4cCI6MjEwMzg4NDg2Nn0.1DDhapp1g_dy_xBPYvNNPJPd9jGgW9FyhaEe0mlegV8';
+const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-ANON-PUBLIC-KEY';
 // -------------------------------------------------------
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -14,6 +14,8 @@ const composer = document.getElementById('composer');
 const composerToggle = document.getElementById('composerToggle');
 const cancelPost = document.getElementById('cancelPost');
 const postForm = document.getElementById('postForm');
+const categorySegmented = document.getElementById('categorySegmented');
+const postCategoryInput = document.getElementById('postCategory');
 const loginPanel = document.getElementById('loginPanel');
 const loginForm = document.getElementById('loginForm');
 const cancelLogin = document.getElementById('cancelLogin');
@@ -68,10 +70,21 @@ composerToggle.addEventListener('click', () => {
 });
 cancelPost.addEventListener('click', () => resetComposer());
 
+// ---------- Category segmented control ----------
+categorySegmented.addEventListener('click', (e) => {
+  const btn = e.target.closest('.segmented-option');
+  if (!btn) return;
+  categorySegmented.querySelectorAll('.segmented-option').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  postCategoryInput.value = btn.dataset.value;
+});
+
 function resetComposer() {
   postForm.reset();
   selectedFiles = [];
   imagePreview.innerHTML = '';
+  categorySegmented.querySelectorAll('.segmented-option').forEach((b, i) => b.classList.toggle('active', i === 0));
+  postCategoryInput.value = 'memorandum';
   composer.classList.add('hidden');
 }
 
@@ -219,12 +232,20 @@ function renderFeed() {
   posts.forEach(post => feedEl.appendChild(buildCard(post)));
 }
 
+const CATEGORY_ICONS = {
+  memorandum: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h6"/></svg>',
+  news: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8Z"/><path d="M7 12h6M7 15h4"/></svg>',
+  advisory: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a1.8 1.8 0 0 0 1.6 2.7h17.2a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0z"/></svg>'
+};
+
 function buildCard(post) {
   const node = cardTemplate.content.cloneNode(true);
 
-  const stamp = node.querySelector('.stamp');
-  stamp.textContent = post.category;
-  stamp.classList.add(post.category);
+  const card = node.querySelector('.card');
+  card.dataset.category = post.category;
+
+  const tag = node.querySelector('.tag');
+  tag.innerHTML = (CATEGORY_ICONS[post.category] || '') + '<span>' + post.category + '</span>';
 
   node.querySelector('.card-title').textContent = post.title;
   node.querySelector('.card-author').textContent = 'BFP Region IV-A';
