@@ -233,9 +233,9 @@ function renderFeed() {
 }
 
 const CATEGORY_ICONS = {
-  memorandum: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h6"/></svg>',
-  news: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8Z"/><path d="M7 12h6M7 15h4"/></svg>',
-  advisory: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a1.8 1.8 0 0 0 1.6 2.7h17.2a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0z"/></svg>'
+  memorandum: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h6"/></svg>',
+  news: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8Z"/><path d="M7 12h6M7 15h4"/></svg>',
+  advisory: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a1.8 1.8 0 0 0 1.6 2.7h17.2a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0z"/></svg>'
 };
 
 function buildCard(post) {
@@ -245,8 +245,9 @@ function buildCard(post) {
   card.dataset.category = post.category;
 
   const tag = node.querySelector('.tag');
-  tag.innerHTML = (CATEGORY_ICONS[post.category] || '') + '<span>' + post.category + '</span>';
+  tag.innerHTML = CATEGORY_ICONS[post.category] || '';
 
+  node.querySelector('.card-category').textContent = post.category;
   node.querySelector('.card-title').textContent = post.title;
   node.querySelector('.card-author').textContent = 'BFP Region IV-A';
   node.querySelector('.card-date').textContent = formatDate(post.created_at);
