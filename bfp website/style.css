@@ -69,15 +69,9 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 }
 .mark { display: flex; align-items: center; gap: 14px; }
 .mark-seal {
-  background: var(--limewash);
-  color: var(--brick-deep);
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.03em;
-  padding: 7px 11px 5px;
-  border-radius: var(--radius-sm);
-  line-height: 1;
+  width: 38px;
+  height: auto;
+  display: block;
 }
 .mark-text { display: flex; flex-direction: column; line-height: 1.35; }
 .mark-text strong {
