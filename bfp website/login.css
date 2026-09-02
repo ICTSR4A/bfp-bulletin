@@ -70,14 +70,9 @@ h1, h2 { font-family: var(--display); margin: 0; }
   gap: 12px;
 }
 .hero-seal {
-  background: var(--limewash);
-  color: var(--brick-deep);
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.03em;
-  padding: 7px 11px 5px;
-  border-radius: var(--radius-sm);
+  width: 40px;
+  height: auto;
+  display: block;
 }
 .hero-org { font-size: 13.5px; color: #E8CFC5; }
 
