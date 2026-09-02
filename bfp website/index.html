@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BFP Region IV-A Bulletin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,8 +21,11 @@
     </div>
     <div class="account-area">
       <span id="accountEmail" class="account-email hidden"></span>
-      <button id="signOutBtn" class="btn-ghost btn-ghost-dark hidden">Sign out</button>
-      <button id="composerToggle" class="btn-primary">Post an update</button>
+      <button id="signOutBtn" class="pill-btn pill-btn-outline hidden">Sign out</button>
+      <button id="composerToggle" class="pill-btn pill-btn-solid">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Post an update
+      </button>
     </div>
   </div>
 </header>
@@ -30,9 +33,9 @@
 <main class="feed-wrap">
 
   <!-- Sign-in: shown when a signed-out user clicks "Post an update" -->
-  <section id="loginPanel" class="slip hidden">
+  <section id="loginPanel" class="panel-card hidden">
     <h2>Sign in to post</h2>
-    <p class="slip-hint">Only signed-in BFP accounts can publish. Ask your admin to create one if you don't have it yet.</p>
+    <p class="panel-hint">Only signed-in BFP accounts can publish. Ask your admin to create one if you don't have it yet.</p>
     <form id="loginForm">
       <label class="field">
         <span>Email</span>
@@ -43,25 +46,34 @@
         <input id="loginPassword" type="password" required autocomplete="current-password">
       </label>
       <p id="loginError" class="form-error hidden"></p>
-      <div class="slip-actions">
-        <button type="button" id="cancelLogin" class="btn-ghost">Cancel</button>
-        <button type="submit" class="btn-primary" id="submitLogin">Sign in</button>
+      <div class="panel-actions">
+        <button type="button" id="cancelLogin" class="pill-btn pill-btn-ghost">Cancel</button>
+        <button type="submit" class="pill-btn pill-btn-solid" id="submitLogin">Sign in</button>
       </div>
     </form>
   </section>
 
-  <!-- Composer: styled as an intake slip, hidden until toggled -->
-  <section id="composer" class="slip hidden">
-    <div class="slip-perf" aria-hidden="true"></div>
-    <h2>New Post</h2>
+  <!-- Composer -->
+  <section id="composer" class="panel-card hidden">
+    <h2>New post</h2>
     <form id="postForm">
       <label class="field">
         <span>Category</span>
-        <select id="postCategory" required>
-          <option value="memorandum">Memorandum</option>
-          <option value="news">News</option>
-          <option value="advisory">Advisory</option>
-        </select>
+        <div class="segmented" id="categorySegmented">
+          <button type="button" class="segmented-option active" data-value="memorandum">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h6"/></svg>
+            Memorandum
+          </button>
+          <button type="button" class="segmented-option" data-value="news">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8Z"/><path d="M7 12h6M7 15h4"/></svg>
+            News
+          </button>
+          <button type="button" class="segmented-option" data-value="advisory">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a1.8 1.8 0 0 0 1.6 2.7h17.2a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0z"/></svg>
+            Advisory
+          </button>
+        </div>
+        <input type="hidden" id="postCategory" value="memorandum">
       </label>
 
       <label class="field">
@@ -91,9 +103,9 @@
         <div id="imagePreview" class="image-preview"></div>
       </label>
 
-      <div class="slip-actions">
-        <button type="button" id="cancelPost" class="btn-ghost">Cancel</button>
-        <button type="submit" class="btn-primary" id="submitPost">Publish</button>
+      <div class="panel-actions">
+        <button type="button" id="cancelPost" class="pill-btn pill-btn-ghost">Cancel</button>
+        <button type="submit" class="pill-btn pill-btn-solid" id="submitPost">Publish</button>
       </div>
     </form>
   </section>
@@ -115,18 +127,21 @@
 
 <template id="postCardTemplate">
   <article class="card">
-    <div class="stamp"></div>
-    <header class="card-head">
-      <h3 class="card-title"></h3>
-      <div class="card-meta">
-        <span class="card-author"></span>
-        <span class="card-dot">·</span>
-        <span class="card-date"></span>
-        <span class="card-station"></span>
-      </div>
-    </header>
-    <p class="card-body"></p>
-    <div class="card-images"></div>
+    <div class="card-accent"></div>
+    <div class="card-inner">
+      <header class="card-head">
+        <span class="tag"></span>
+        <h3 class="card-title"></h3>
+        <div class="card-meta">
+          <span class="card-author"></span>
+          <span class="card-dot">·</span>
+          <span class="card-date"></span>
+          <span class="card-station"></span>
+        </div>
+      </header>
+      <p class="card-body"></p>
+      <div class="card-images"></div>
+    </div>
   </article>
 </template>
 
