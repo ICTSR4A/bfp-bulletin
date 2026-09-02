@@ -33,8 +33,17 @@
 
 <main class="layout">
 
-  <!-- Left rail: category board -->
+  <!-- Left rail: profile + category board -->
   <aside class="rail">
+
+    <!-- Signed-in personnel profile card -->
+    <div class="rail-block rail-profile hidden" id="sidebarProfile">
+      <div class="profile-avatar" id="profileAvatar">—</div>
+      <div class="profile-name" id="profileName"></div>
+      <div class="profile-rank" id="profileRank"></div>
+      <div class="profile-office" id="profileOffice"></div>
+    </div>
+
     <div class="rail-block">
       <h4 class="rail-heading">Board</h4>
       <nav class="rail-nav" aria-label="Filter by category">
@@ -143,6 +152,22 @@
 
   </div>
 
+  <!-- Right rail: post ideas — edit this list any time -->
+  <aside class="rail-right">
+    <div class="rail-block">
+      <h4 class="rail-heading">What to post</h4>
+      <ul class="idea-list">
+        <li><strong>Duty rosters &amp; schedules</strong><span>New assignments, shift changes, travel orders</span></li>
+        <li><strong>Fire incidents</strong><span>Response summaries, cause &amp; origin findings</span></li>
+        <li><strong>Training &amp; seminars</strong><span>Upcoming sessions, certifications completed</span></li>
+        <li><strong>Community activities</strong><span>Fire drills, safety inspections, outreach events</span></li>
+        <li><strong>Personnel news</strong><span>Promotions, transfers, commendations</span></li>
+        <li><strong>Advisories</strong><span>Weather, road closures, urgent notices for stations</span></li>
+      </ul>
+      <p class="idea-note">Edit this list in index.html — no code changes needed elsewhere.</p>
+    </div>
+  </aside>
+
 </main>
 
 <template id="postCardTemplate">
@@ -153,8 +178,8 @@
           <span class="tag"></span>
         </span>
         <div class="card-headline">
-          <span class="card-category"></span>
           <h3 class="card-title"></h3>
+          <span class="card-category"></span>
           <div class="card-meta">
             <span class="card-author"></span>
             <span class="card-sep">|</span>
