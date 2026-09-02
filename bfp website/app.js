@@ -1,8 +1,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // ---- Configure these two values for your project ----
-const SUPABASE_URL = 'https://awqnrdbytynmalgccocp.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_yi3ta4_7kUSUOqhVx-an_g_WTOiLstO';
+const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-ANON-PUBLIC-KEY';
 // -------------------------------------------------------
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -14,6 +14,13 @@ const composer = document.getElementById('composer');
 const composerToggle = document.getElementById('composerToggle');
 const cancelPost = document.getElementById('cancelPost');
 const postForm = document.getElementById('postForm');
+const loginPanel = document.getElementById('loginPanel');
+const loginForm = document.getElementById('loginForm');
+const cancelLogin = document.getElementById('cancelLogin');
+const submitLogin = document.getElementById('submitLogin');
+const loginError = document.getElementById('loginError');
+const accountEmail = document.getElementById('accountEmail');
+const signOutBtn = document.getElementById('signOutBtn');
 const imageInput = document.getElementById('postImages');
 const imagePreview = document.getElementById('imagePreview');
 const submitBtn = document.getElementById('submitPost');
@@ -25,11 +32,39 @@ const lightboxClose = document.getElementById('lightboxClose');
 let activeFilter = 'all';
 let allPosts = [];
 let selectedFiles = [];
+let currentUser = null;
 
-// ---------- Composer open/close ----------
+// ---------- Auth state ----------
+supabase.auth.getSession().then(({ data }) => {
+  applyAuthState(data.session?.user ?? null);
+});
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  applyAuthState(session?.user ?? null);
+});
+
+function applyAuthState(user) {
+  currentUser = user;
+  if (user) {
+    accountEmail.textContent = user.email;
+    accountEmail.classList.remove('hidden');
+    signOutBtn.classList.remove('hidden');
+  } else {
+    accountEmail.classList.add('hidden');
+    signOutBtn.classList.add('hidden');
+    composer.classList.add('hidden');
+  }
+}
+
+// ---------- Composer open/close (gated behind sign-in) ----------
 composerToggle.addEventListener('click', () => {
-  composer.classList.remove('hidden');
-  composer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (currentUser) {
+    composer.classList.remove('hidden');
+    composer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    loginPanel.classList.remove('hidden');
+    loginPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 cancelPost.addEventListener('click', () => resetComposer());
 
@@ -39,6 +74,42 @@ function resetComposer() {
   imagePreview.innerHTML = '';
   composer.classList.add('hidden');
 }
+
+// ---------- Sign in / sign out ----------
+cancelLogin.addEventListener('click', () => {
+  loginForm.reset();
+  loginError.classList.add('hidden');
+  loginPanel.classList.add('hidden');
+});
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitLogin.disabled = true;
+  submitLogin.textContent = 'Signing in…';
+  loginError.classList.add('hidden');
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    loginError.textContent = error.message;
+    loginError.classList.remove('hidden');
+  } else {
+    loginForm.reset();
+    loginPanel.classList.add('hidden');
+    composer.classList.remove('hidden');
+    composer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  submitLogin.disabled = false;
+  submitLogin.textContent = 'Sign in';
+});
+
+signOutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+});
 
 // ---------- Image preview ----------
 imageInput.addEventListener('change', () => {
@@ -88,7 +159,8 @@ postForm.addEventListener('submit', async (e) => {
       body,
       station,
       province,
-      image_urls: imageUrls
+      image_urls: imageUrls,
+      posted_by: currentUser.id
     });
 
     if (insertError) throw insertError;
