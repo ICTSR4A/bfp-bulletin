@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BFP Region IV-A Bulletin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
+<header class="banner">
+  <div class="banner-inner">
     <div class="mark">
-      <span class="mark-badge">BFP</span>
+      <span class="mark-seal">BFP</span>
       <div class="mark-text">
-        <strong>Region IV-A Bulletin</strong>
-        <span>Cavite · Laguna · Batangas · Rizal · Quezon</span>
+        <strong>Bureau of Fire Protection</strong>
+        <span>Regional Office IV-A &middot; Bulletin</span>
       </div>
     </div>
     <div class="account-area">
@@ -28,6 +28,7 @@
       </button>
     </div>
   </div>
+  <div class="awning" aria-hidden="true"></div>
 </header>
 
 <main class="layout">
@@ -195,8 +196,6 @@
 
 <script type="module" src="app.js"></script>
 <script>
-  // Keep the mobile mirror row in sync with the real (JS-driven) chip row,
-  // purely presentational — clicking a mirror chip clicks the matching real one.
   document.querySelectorAll('.chip-mobile-mirror').forEach(mirror => {
     mirror.addEventListener('click', () => {
       const filter = mirror.dataset.mirrorFilter;
